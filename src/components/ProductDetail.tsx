@@ -1,8 +1,9 @@
 import { Product } from "@/lib/api";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Star, Minus, Plus, X } from "lucide-react";
+import { Star, Minus, Plus, X, Check } from "lucide-react";
 import { useState } from "react";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductDetailProps {
   product: Product | null;
@@ -13,6 +14,15 @@ interface ProductDetailProps {
 export function ProductDetail({ product, open, onOpenChange }: ProductDetailProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product, quantity);
+      onOpenChange(false);
+      setQuantity(1);
+    }
+  };
 
   if (!product) return null;
 
@@ -130,10 +140,10 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
 
               {/* Buttons */}
               <div className="flex gap-3">
-                <Button variant="outline" className="flex-1 h-12">
+                <Button variant="outline" className="flex-1 h-12" onClick={handleAddToCart}>
                   Add to Cart
                 </Button>
-                <Button className="flex-1 h-12">
+                <Button className="flex-1 h-12" onClick={handleAddToCart}>
                   Buy Now
                 </Button>
               </div>

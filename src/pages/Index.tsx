@@ -5,7 +5,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductDetail } from "@/components/ProductDetail";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,12 +13,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCart } from "@/contexts/CartContext";
 
 const Index = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
+  const { totalItems, setIsOpen: setCartOpen } = useCart();
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -63,8 +65,9 @@ const Index = () => {
               <Button variant="ghost" size="sm">
                 Sign in
               </Button>
-              <Button size="sm">
-                Cart (0)
+              <Button size="sm" className="gap-2" onClick={() => setCartOpen(true)}>
+                <ShoppingBag className="h-4 w-4" />
+                Cart ({totalItems})
               </Button>
             </div>
           </div>
