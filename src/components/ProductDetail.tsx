@@ -1,11 +1,7 @@
 import { Product } from "@/lib/api";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Star, ShoppingCart, Package, Heart, Truck, Shield, RotateCcw } from "lucide-react";
+import { Star, Minus, Plus, X } from "lucide-react";
 import { useState } from "react";
 
 interface ProductDetailProps {
@@ -14,13 +10,8 @@ interface ProductDetailProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function ProductDetail({
-  product,
-  open,
-  onOpenChange,
-}: ProductDetailProps) {
+export function ProductDetail({ product, open, onOpenChange }: ProductDetailProps) {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   if (!product) return null;
@@ -29,173 +20,122 @@ export function ProductDetail({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 gap-0 border-0 shadow-2xl">
-        <div className="grid md:grid-cols-2">
-          {/* Image Gallery */}
-          <div className="relative bg-gradient-to-br from-secondary to-muted p-6">
-            <div className="sticky top-0 space-y-4">
-              <div className="aspect-square overflow-hidden rounded-2xl bg-card shadow-lg">
-                <img
-                  src={product.images[selectedImage] || product.thumbnail}
-                  alt={product.title}
-                  className="h-full w-full object-cover animate-fade-in"
-                />
-              </div>
-              {product.images.length > 1 && (
-                <div className="flex gap-3 overflow-x-auto pb-2">
-                  {product.images.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedImage(idx)}
-                      className={`h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-300 ${
-                        selectedImage === idx
-                          ? "border-primary shadow-lg shadow-primary/20 scale-105"
-                          : "border-transparent opacity-70 hover:opacity-100"
-                      }`}
-                    >
-                      <img
-                        src={img}
-                        alt={`${product.title} ${idx + 1}`}
-                        className="h-full w-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
+      <DialogContent className="max-w-4xl p-0 gap-0 border overflow-hidden">
+        <button
+          onClick={() => onOpenChange(false)}
+          className="absolute right-4 top-4 z-10 h-8 w-8 rounded-full bg-background/80 backdrop-blur flex items-center justify-center hover:bg-secondary transition-colors"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        <div className="grid md:grid-cols-2 max-h-[85vh] overflow-y-auto">
+          {/* Images */}
+          <div className="bg-secondary p-8 flex flex-col gap-4">
+            <div className="aspect-square rounded-xl overflow-hidden bg-background">
+              <img
+                src={product.images[selectedImage] || product.thumbnail}
+                alt={product.title}
+                className="h-full w-full object-cover"
+              />
             </div>
+            {product.images.length > 1 && (
+              <div className="flex gap-2">
+                {product.images.slice(0, 4).map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    className={`h-16 w-16 rounded-lg overflow-hidden transition-all ${
+                      selectedImage === idx
+                        ? "ring-2 ring-foreground ring-offset-2"
+                        : "opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <img src={img} alt="" className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Product Info */}
-          <div className="p-8 space-y-6">
-            {/* Header */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 flex-wrap">
-                <Badge className="gradient-primary border-0 text-primary-foreground">
-                  {product.category}
-                </Badge>
-                {product.brand && (
-                  <Badge variant="outline" className="font-medium">
-                    {product.brand}
-                  </Badge>
-                )}
-              </div>
-              
-              <h2 className="font-display text-3xl font-bold text-foreground">
-                {product.title}
-              </h2>
-
-              {/* Rating */}
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-5 w-5 ${
-                        i < Math.floor(product.rating)
-                          ? "fill-amber-400 text-amber-400"
-                          : "fill-muted text-muted"
-                      }`}
-                    />
-                  ))}
+          {/* Info */}
+          <div className="p-8 flex flex-col">
+            <div className="flex-1 space-y-6">
+              {/* Header */}
+              <div className="space-y-3">
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                  {product.brand || product.category}
+                </p>
+                <h2 className="text-2xl font-semibold text-foreground leading-tight">
+                  {product.title}
+                </h2>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <Star className="h-4 w-4 fill-foreground text-foreground" />
+                    <span className="font-medium">{product.rating.toFixed(1)}</span>
+                  </div>
+                  <span className="text-muted-foreground">·</span>
+                  <span className="text-muted-foreground text-sm">
+                    {Math.floor(Math.random() * 500 + 50)} reviews
+                  </span>
                 </div>
-                <span className="font-semibold text-foreground">
-                  {product.rating.toFixed(1)}
-                </span>
-                <span className="text-muted-foreground">•</span>
-                <span className="text-muted-foreground">
-                  {Math.floor(Math.random() * 500) + 50} reviews
-                </span>
               </div>
-            </div>
 
-            {/* Price */}
-            <div className="space-y-2 py-4 border-y border-border">
+              {/* Price */}
               <div className="flex items-baseline gap-3">
-                <span className="text-4xl font-bold text-gradient">
-                  ${discountedPrice.toFixed(2)}
-                </span>
+                <span className="text-3xl font-semibold">${discountedPrice.toFixed(2)}</span>
                 {product.discountPercentage > 0 && (
                   <>
-                    <span className="text-xl text-muted-foreground line-through">
+                    <span className="text-lg text-muted-foreground line-through">
                       ${product.price.toFixed(2)}
                     </span>
-                    <Badge variant="destructive" className="text-sm">
+                    <span className="text-sm font-medium text-success">
                       Save {Math.round(product.discountPercentage)}%
-                    </Badge>
+                    </span>
                   </>
                 )}
               </div>
-              <div className="flex items-center gap-2 text-accent">
-                <Package className="h-4 w-4" />
-                <span className="font-medium">
-                  {product.stock > 10
-                    ? "In Stock"
-                    : product.stock > 0
-                    ? `Only ${product.stock} left!`
-                    : "Out of Stock"}
-                </span>
-              </div>
-            </div>
 
-            {/* Description */}
-            <p className="text-muted-foreground leading-relaxed">
-              {product.description}
-            </p>
+              {/* Description */}
+              <p className="text-muted-foreground leading-relaxed">
+                {product.description}
+              </p>
 
-            {/* Quantity */}
-            <div className="flex items-center gap-4">
-              <span className="font-medium text-foreground">Quantity:</span>
-              <div className="flex items-center rounded-xl border border-border">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-4 py-2 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  −
-                </button>
-                <span className="px-4 py-2 font-semibold text-foreground min-w-[3rem] text-center">
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-4 py-2 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  +
-                </button>
-              </div>
+              {/* Stock */}
+              <p className={`text-sm font-medium ${product.stock > 10 ? "text-success" : "text-destructive"}`}>
+                {product.stock > 10 ? "In Stock" : `Only ${product.stock} left`}
+              </p>
             </div>
 
             {/* Actions */}
-            <div className="flex gap-3 pt-2">
-              <Button
-                size="lg"
-                className="flex-1 h-14 text-lg font-semibold gradient-primary border-0 text-primary-foreground shadow-lg shadow-primary/30 hover:opacity-90 transition-all"
-              >
-                <ShoppingCart className="mr-2 h-5 w-5" />
-                Add to Cart
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className={`h-14 w-14 ${isLiked ? "text-destructive border-destructive" : ""}`}
-                onClick={() => setIsLiked(!isLiked)}
-              >
-                <Heart className={`h-6 w-6 ${isLiked ? "fill-current" : ""}`} />
-              </Button>
-            </div>
+            <div className="space-y-4 pt-6 mt-6 border-t">
+              {/* Quantity */}
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Quantity</span>
+                <div className="flex items-center border rounded-lg">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="h-10 w-10 flex items-center justify-center hover:bg-secondary transition-colors"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <span className="w-12 text-center font-medium">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="h-10 w-10 flex items-center justify-center hover:bg-secondary transition-colors"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
 
-            {/* Features */}
-            <div className="grid grid-cols-3 gap-4 pt-6">
-              <div className="flex flex-col items-center gap-2 text-center p-3 rounded-xl bg-secondary">
-                <Truck className="h-6 w-6 text-primary" />
-                <span className="text-xs font-medium text-muted-foreground">Free Shipping</span>
-              </div>
-              <div className="flex flex-col items-center gap-2 text-center p-3 rounded-xl bg-secondary">
-                <Shield className="h-6 w-6 text-primary" />
-                <span className="text-xs font-medium text-muted-foreground">Secure Payment</span>
-              </div>
-              <div className="flex flex-col items-center gap-2 text-center p-3 rounded-xl bg-secondary">
-                <RotateCcw className="h-6 w-6 text-primary" />
-                <span className="text-xs font-medium text-muted-foreground">Easy Returns</span>
+              {/* Buttons */}
+              <div className="flex gap-3">
+                <Button variant="outline" className="flex-1 h-12">
+                  Add to Cart
+                </Button>
+                <Button className="flex-1 h-12">
+                  Buy Now
+                </Button>
               </div>
             </div>
           </div>
