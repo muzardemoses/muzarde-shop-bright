@@ -148,6 +148,17 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
 
               {/* Buttons */}
               <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-12 w-12 shrink-0"
+                  onClick={() => {
+                    toggleWishlist(product.id);
+                    toast.success(wishlisted ? "Removed from wishlist" : "Added to wishlist");
+                  }}
+                >
+                  <Heart className={`h-4 w-4 ${wishlisted ? "fill-destructive text-destructive" : ""}`} />
+                </Button>
                 <Button variant="outline" className="flex-1 h-12" onClick={handleAddToCart}>
                   Add to Cart
                 </Button>

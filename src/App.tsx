@@ -27,6 +27,7 @@ const App = () => (
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
+      </WishlistProvider>
     </CartProvider>
   </QueryClientProvider>
 );
