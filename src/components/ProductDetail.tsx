@@ -20,6 +20,9 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
   const handleAddToCart = () => {
     if (product) {
       addToCart(product, quantity);
+      toast.success(`${product.title} added to cart`, {
+        description: `Quantity: ${quantity}`,
+      });
       onOpenChange(false);
       setQuantity(1);
     }
