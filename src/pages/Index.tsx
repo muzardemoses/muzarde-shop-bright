@@ -18,6 +18,12 @@ import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 
 const Index = () => {
+  // Update document title based on active category
+  const updateTitle = (cat: string) => {
+    document.title = cat === "all" 
+      ? "Store — Shop Top Products Online" 
+      : `${cat.charAt(0).toUpperCase() + cat.slice(1).replace(/-/g, " ")} — Store`;
+  };
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
