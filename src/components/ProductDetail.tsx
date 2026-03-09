@@ -32,6 +32,8 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
 
   if (!product) return null;
 
+  const wishlisted = isWishlisted(product.id);
+
   const discountedPrice = product.price * (1 - product.discountPercentage / 100);
 
   return (
