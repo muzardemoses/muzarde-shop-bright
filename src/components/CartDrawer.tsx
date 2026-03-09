@@ -1,4 +1,5 @@
 import { useCart } from "@/contexts/CartContext";
+import { useNavigate } from "react-router-dom";
 import {
   Sheet,
   SheetContent,
