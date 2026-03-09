@@ -99,7 +99,7 @@ const Index = () => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 -mb-2">
             <button
-              onClick={() => setCategory("all")}
+              onClick={() => handleCategoryChange("all")}
               className={`px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                 category === "all"
                   ? "bg-foreground text-background"
