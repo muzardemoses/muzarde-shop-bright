@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts, searchProducts, getCategories, Product } from "@/lib/api";
 import { ProductCard } from "@/components/ProductCard";
