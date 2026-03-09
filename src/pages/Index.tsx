@@ -26,6 +26,10 @@ const Index = () => {
   };
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("all");
+  const handleCategoryChange = (cat: string) => {
+    setCategory(cat);
+    updateTitle(cat);
+  };
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const { totalItems, setIsOpen: setCartOpen } = useCart();
