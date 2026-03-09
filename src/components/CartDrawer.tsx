@@ -98,7 +98,15 @@ export function CartDrawer() {
                 <span>Total</span>
                 <span>${totalPrice.toFixed(2)}</span>
               </div>
-              <Button className="w-full h-12">Checkout</Button>
+              <Button 
+                className="w-full h-12"
+                onClick={() => {
+                  setIsOpen(false);
+                  navigate("/checkout");
+                }}
+              >
+                Checkout
+              </Button>
               <Button
                 variant="ghost"
                 className="w-full"
