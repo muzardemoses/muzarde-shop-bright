@@ -25,10 +25,38 @@ const checkoutSchema = z.object({
 
 type CheckoutValues = z.infer<typeof checkoutSchema>;
 
+// Demo coupons
+const DEMO_COUPONS: Record<string, number> = {
+  "SAVE10": 10,
+  "SAVE20": 20,
+  "WELCOME": 15,
+};
+
 const Checkout = () => {
   const { items, totalPrice, clearCart } = useCart();
   const navigate = useNavigate();
   const [isSuccess, setIsSuccess] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
+
+  const discountAmount = appliedCoupon ? (totalPrice * appliedCoupon.discount) / 100 : 0;
+  const finalPrice = totalPrice - discountAmount;
+
+  const handleApplyCoupon = () => {
+    const code = couponCode.toUpperCase().trim();
+    if (DEMO_COUPONS[code]) {
+      setAppliedCoupon({ code, discount: DEMO_COUPONS[code] });
+      toast.success(`Coupon applied! ${DEMO_COUPONS[code]}% off`);
+    } else {
+      toast.error("Invalid coupon code");
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    toast.success("Coupon removed");
+  };
 
   const {
     register,
