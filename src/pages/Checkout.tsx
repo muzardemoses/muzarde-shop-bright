@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,6 +33,7 @@ const DEMO_COUPONS: Record<string, number> = {
 };
 
 const Checkout = () => {
+  useEffect(() => { document.title = "Checkout — Store"; }, []);
   const { items, totalPrice, clearCart } = useCart();
   const navigate = useNavigate();
   const [isSuccess, setIsSuccess] = useState(false);
