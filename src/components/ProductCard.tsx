@@ -12,7 +12,15 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onClick }: ProductCardProps) {
   const { addToCart } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
   const discountedPrice = product.price * (1 - product.discountPercentage / 100);
+  const wishlisted = isWishlisted(product.id);
+
+  const handleToggleWishlist = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleWishlist(product.id);
+    toast.success(wishlisted ? "Removed from wishlist" : "Added to wishlist");
+  };
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
