@@ -11,6 +11,7 @@ import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 
 export function CartDrawer() {
   const { items, isOpen, setIsOpen, updateQuantity, removeFromCart, totalPrice, clearCart } = useCart();
+  const navigate = useNavigate();
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
