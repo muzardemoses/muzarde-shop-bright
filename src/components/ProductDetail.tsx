@@ -20,7 +20,7 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl p-0 gap-0 border overflow-hidden fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <DialogContent className="max-w-4xl p-0 gap-0 border overflow-hidden">
         <button
           onClick={() => onOpenChange(false)}
           className="absolute right-4 top-4 z-10 h-8 w-8 rounded-full bg-background/80 backdrop-blur flex items-center justify-center hover:bg-secondary transition-colors"
