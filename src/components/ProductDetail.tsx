@@ -17,6 +17,7 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
 
   const handleAddToCart = () => {
     if (product) {
