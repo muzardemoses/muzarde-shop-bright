@@ -10,6 +10,7 @@ import { useCart } from "@/contexts/CartContext";
 import { Link } from "react-router-dom";
 
 const Wishlist = () => {
+  useEffect(() => { document.title = "Wishlist — Store"; }, []);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const { wishlist } = useWishlist();

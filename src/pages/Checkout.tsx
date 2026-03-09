@@ -33,6 +33,7 @@ const DEMO_COUPONS: Record<string, number> = {
 };
 
 const Checkout = () => {
+  useEffect(() => { document.title = "Checkout — Store"; }, []);
   const { items, totalPrice, clearCart } = useCart();
   const navigate = useNavigate();
   const [isSuccess, setIsSuccess] = useState(false);
