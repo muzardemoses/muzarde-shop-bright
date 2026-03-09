@@ -14,6 +14,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <CartProvider>
+      <WishlistProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
