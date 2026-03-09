@@ -22,6 +22,7 @@ const Index = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const { totalItems, setIsOpen: setCartOpen } = useCart();
+  const { totalWishlist } = useWishlist();
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
