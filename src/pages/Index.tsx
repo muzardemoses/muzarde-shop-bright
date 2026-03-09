@@ -184,7 +184,7 @@ const Index = () => {
               variant="link"
               onClick={() => {
                 setSearch("");
-                setCategory("all");
+                handleCategoryChange("all");
               }}
             >
               Clear filters
