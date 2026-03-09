@@ -1,9 +1,10 @@
 import { Product } from "@/lib/api";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Star, Minus, Plus, X, Check } from "lucide-react";
+import { Star, Minus, Plus, X } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
 
 interface ProductDetailProps {
   product: Product | null;
