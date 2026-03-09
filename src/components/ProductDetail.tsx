@@ -1,9 +1,10 @@
 import { Product } from "@/lib/api";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Star, Minus, Plus, X } from "lucide-react";
+import { Star, Minus, Plus, X, Heart } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { toast } from "sonner";
 
 interface ProductDetailProps {
@@ -16,6 +17,7 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
 
   const handleAddToCart = () => {
     if (product) {
@@ -29,6 +31,8 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
   };
 
   if (!product) return null;
+
+  const wishlisted = isWishlisted(product.id);
 
   const discountedPrice = product.price * (1 - product.discountPercentage / 100);
 
@@ -144,6 +148,17 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
 
               {/* Buttons */}
               <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-12 w-12 shrink-0"
+                  onClick={() => {
+                    toggleWishlist(product.id);
+                    toast.success(wishlisted ? "Removed from wishlist" : "Added to wishlist");
+                  }}
+                >
+                  <Heart className={`h-4 w-4 ${wishlisted ? "fill-destructive text-destructive" : ""}`} />
+                </Button>
                 <Button variant="outline" className="flex-1 h-12" onClick={handleAddToCart}>
                   Add to Cart
                 </Button>

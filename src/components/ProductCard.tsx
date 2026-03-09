@@ -1,7 +1,8 @@
 import { Product } from "@/lib/api";
-import { Star, ShoppingCart } from "lucide-react";
+import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { toast } from "sonner";
 
 interface ProductCardProps {
@@ -11,7 +12,15 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onClick }: ProductCardProps) {
   const { addToCart } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
   const discountedPrice = product.price * (1 - product.discountPercentage / 100);
+  const wishlisted = isWishlisted(product.id);
+
+  const handleToggleWishlist = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleWishlist(product.id);
+    toast.success(wishlisted ? "Removed from wishlist" : "Added to wishlist");
+  };
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -36,6 +45,12 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
             -{Math.round(product.discountPercentage)}%
           </span>
         )}
+        <button
+          onClick={handleToggleWishlist}
+          className="absolute top-3 right-3 h-9 w-9 rounded-full bg-background/80 backdrop-blur flex items-center justify-center transition-colors hover:bg-background"
+        >
+          <Heart className={`h-4 w-4 transition-colors ${wishlisted ? "fill-destructive text-destructive" : "text-foreground"}`} />
+        </button>
         <Button
           size="icon"
           className="absolute bottom-3 right-3 h-10 w-10 rounded-full opacity-0 translate-y-2 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0"

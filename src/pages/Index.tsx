@@ -5,7 +5,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductDetail } from "@/components/ProductDetail";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, SlidersHorizontal, ShoppingBag } from "lucide-react";
+import { Search, SlidersHorizontal, ShoppingBag, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 const Index = () => {
   const [search, setSearch] = useState("");
@@ -21,6 +22,7 @@ const Index = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const { totalItems, setIsOpen: setCartOpen } = useCart();
+  const { totalWishlist } = useWishlist();
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -62,6 +64,10 @@ const Index = () => {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm" className="gap-2">
+                <Heart className="h-4 w-4" />
+                {totalWishlist > 0 && <span>({totalWishlist})</span>}
+              </Button>
               <Button variant="ghost" size="sm">
                 Sign in
               </Button>
