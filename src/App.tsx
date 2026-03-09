@@ -17,20 +17,20 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <CartProvider>
       <WishlistProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <CartDrawer />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/checkout" element={<Checkout />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <CartDrawer />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/checkout" element={<Checkout />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
       </WishlistProvider>
     </CartProvider>
   </QueryClientProvider>
