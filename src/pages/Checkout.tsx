@@ -231,11 +231,51 @@ const Checkout = () => {
 
             <Separator />
 
+            {/* Coupon Field */}
+            <div className="space-y-2">
+              <Label htmlFor="coupon" className="flex items-center gap-2 text-sm">
+                <Tag className="h-4 w-4" />
+                Coupon Code
+              </Label>
+              <div className="flex gap-2">
+                <Input
+                  id="coupon"
+                  placeholder="Enter code"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  disabled={!!appliedCoupon}
+                  className="flex-1"
+                />
+                {appliedCoupon ? (
+                  <Button type="button" variant="outline" onClick={handleRemoveCoupon}>
+                    Remove
+                  </Button>
+                ) : (
+                  <Button type="button" variant="secondary" onClick={handleApplyCoupon}>
+                    Apply
+                  </Button>
+                )}
+              </div>
+              {appliedCoupon && (
+                <p className="text-sm text-primary">
+                  {appliedCoupon.code} - {appliedCoupon.discount}% off applied!
+                </p>
+              )}
+            </div>
+
+            <Separator />
+
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span>${totalPrice.toFixed(2)}</span>
               </div>
+              {appliedCoupon && (
+                <div className="flex justify-between text-primary">
+                  <span>Discount ({appliedCoupon.discount}%)</span>
+                  <span>-${discountAmount.toFixed(2)}</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Shipping</span>
                 <span>Free</span>
@@ -243,7 +283,7 @@ const Checkout = () => {
               <Separator className="my-2" />
               <div className="flex justify-between text-base font-semibold">
                 <span>Total</span>
-                <span>${totalPrice.toFixed(2)}</span>
+                <span>${finalPrice.toFixed(2)}</span>
               </div>
             </div>
 
@@ -253,7 +293,7 @@ const Checkout = () => {
               className="w-full h-12 text-lg" 
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Processing..." : `Pay $${totalPrice.toFixed(2)}`}
+              {isSubmitting ? "Processing..." : `Pay $${finalPrice.toFixed(2)}`}
             </Button>
             <p className="text-xs text-center text-muted-foreground">
               This is a demo checkout. No actual charges will be made.
