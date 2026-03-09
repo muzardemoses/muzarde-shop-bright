@@ -1,5 +1,8 @@
 import { Product } from "@/lib/api";
-import { Star } from "lucide-react";
+import { Star, ShoppingCart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -7,7 +10,14 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onClick }: ProductCardProps) {
+  const { addToCart } = useCart();
   const discountedPrice = product.price * (1 - product.discountPercentage / 100);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart(product, 1);
+    toast.success(`${product.title} added to cart`);
+  };
 
   return (
     <article
@@ -26,6 +36,13 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
             -{Math.round(product.discountPercentage)}%
           </span>
         )}
+        <Button
+          size="icon"
+          className="absolute bottom-3 right-3 h-10 w-10 rounded-full opacity-0 translate-y-2 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0"
+          onClick={handleAddToCart}
+        >
+          <ShoppingCart className="h-4 w-4" />
+        </Button>
       </div>
 
       {/* Info */}
