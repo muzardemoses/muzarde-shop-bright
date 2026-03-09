@@ -20,7 +20,7 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl p-0 gap-0 border overflow-hidden">
+      <DialogContent className="max-w-4xl p-0 gap-0 border-0 sm:border overflow-hidden h-full sm:h-auto sm:max-h-[85vh] rounded-none sm:rounded-lg">
         <button
           onClick={() => onOpenChange(false)}
           className="absolute right-4 top-4 z-10 h-8 w-8 rounded-full bg-background/80 backdrop-blur flex items-center justify-center hover:bg-secondary transition-colors"
@@ -28,7 +28,7 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
           <X className="h-4 w-4" />
         </button>
 
-        <div className="grid md:grid-cols-2 max-h-[85vh] overflow-y-auto">
+        <div className="grid md:grid-cols-2 h-full sm:max-h-[85vh] overflow-y-auto">
           {/* Images */}
           <div className="bg-secondary p-8 flex flex-col gap-4">
             <div className="aspect-square rounded-xl overflow-hidden bg-background">
