@@ -140,10 +140,10 @@ export function ProductDetail({ product, open, onOpenChange }: ProductDetailProp
 
               {/* Buttons */}
               <div className="flex gap-3">
-                <Button variant="outline" className="flex-1 h-12">
+                <Button variant="outline" className="flex-1 h-12" onClick={handleAddToCart}>
                   Add to Cart
                 </Button>
-                <Button className="flex-1 h-12">
+                <Button className="flex-1 h-12" onClick={handleAddToCart}>
                   Buy Now
                 </Button>
               </div>
