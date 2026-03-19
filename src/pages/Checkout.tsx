@@ -129,7 +129,7 @@ const Checkout = () => {
               {/* Contact Info */}
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold">Contact Information</h2>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First Name</Label>
                     <Input id="firstName" {...register("firstName")} />
@@ -140,7 +140,7 @@ const Checkout = () => {
                     <Input id="lastName" {...register("lastName")} />
                     {errors.lastName && <p className="text-sm text-destructive">{errors.lastName.message}</p>}
                   </div>
-                  <div className="col-span-2 space-y-2">
+                  <div className="space-y-2 sm:col-span-2">
                     <Label htmlFor="email">Email</Label>
                     <Input id="email" type="email" {...register("email")} />
                     {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
@@ -159,7 +159,7 @@ const Checkout = () => {
                     <Input id="address" {...register("address")} />
                     {errors.address && <p className="text-sm text-destructive">{errors.address.message}</p>}
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="city">City</Label>
                       <Input id="city" {...register("city")} />
@@ -185,7 +185,7 @@ const Checkout = () => {
                     <Input id="cardNumber" placeholder="0000 0000 0000 0000" {...register("cardNumber")} />
                     {errors.cardNumber && <p className="text-sm text-destructive">{errors.cardNumber.message}</p>}
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="expiry">Expiry Date</Label>
                       <Input id="expiry" placeholder="MM/YY" {...register("expiry")} />
@@ -238,7 +238,7 @@ const Checkout = () => {
                 <Tag className="h-4 w-4" />
                 Coupon Code
               </Label>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   id="coupon"
                   placeholder="Enter code"

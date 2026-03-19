@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts, searchProducts, getCategories, Product } from "@/lib/api";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductDetail } from "@/components/ProductDetail";
-import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, SlidersHorizontal, ShoppingBag, Heart } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SiteHeader } from "@/components/SiteHeader";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 
@@ -26,6 +25,7 @@ const Index = () => {
   };
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating-desc">("featured");
   const handleCategoryChange = (cat: string) => {
     setCategory(cat);
     updateTitle(cat);
@@ -47,56 +47,27 @@ const Index = () => {
       return getProducts(24, 0, category === "all" ? undefined : category);
     },
   });
+  const sortedProducts = [...(data?.products ?? [])].sort((a, b) => {
+    if (sortBy === "price-asc") return a.price - b.price;
+    if (sortBy === "price-desc") return b.price - a.price;
+    if (sortBy === "rating-desc") return b.rating - a.rating;
+    return 0;
+  });
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto py-4">
-          <div className="flex items-center justify-between gap-8">
-            {/* Logo */}
-            <a href="/" className="text-xl font-semibold tracking-tight">
-              store<span className="text-muted-foreground">.</span>
-            </a>
-
-            {/* Search */}
-            <div className="flex-1 max-w-xl">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10 h-10 bg-secondary border-0 focus-visible:ring-1"
-                />
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center gap-2">
-              <Link to="/wishlist">
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <Heart className="h-4 w-4" />
-                  {totalWishlist > 0 && <span>({totalWishlist})</span>}
-                </Button>
-              </Link>
-              <Button variant="ghost" size="sm">
-                Sign in
-              </Button>
-              <Button size="sm" className="gap-2" onClick={() => setCartOpen(true)}>
-                <ShoppingBag className="h-4 w-4" />
-                Cart ({totalItems})
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader
+        cartCount={totalItems}
+        wishlistCount={totalWishlist}
+        onOpenCart={() => setCartOpen(true)}
+        searchValue={search}
+        onSearchChange={setSearch}
+      />
 
       {/* Main */}
-      <main className="container mx-auto py-8">
+      <main className="container mx-auto px-4 py-6 sm:py-8">
         {/* Filters */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 -mb-2">
             <button
               onClick={() => handleCategoryChange("all")}
@@ -125,16 +96,16 @@ const Index = () => {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2 shrink-0">
+              <Button variant="outline" size="sm" className="w-full gap-2 sm:w-auto shrink-0">
                 <SlidersHorizontal className="h-4 w-4" />
-                Filter
+                Sort products
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>Price: Low to High</DropdownMenuItem>
-              <DropdownMenuItem>Price: High to Low</DropdownMenuItem>
-              <DropdownMenuItem>Highest Rated</DropdownMenuItem>
-              <DropdownMenuItem>Most Popular</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("featured")}>Featured</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("price-asc")}>Price: Low to High</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("price-desc")}>Price: High to Low</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("rating-desc")}>Highest Rated</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -158,7 +129,7 @@ const Index = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-            {data?.products.map((product, i) => (
+            {sortedProducts.map((product, i) => (
               <div
                 key={product.id}
                 className="animate-in"
@@ -177,7 +148,7 @@ const Index = () => {
         )}
 
         {/* Empty */}
-        {data?.products.length === 0 && !isLoading && (
+        {sortedProducts.length === 0 && !isLoading && (
           <div className="text-center py-20">
             <p className="text-muted-foreground">No products found</p>
             <Button

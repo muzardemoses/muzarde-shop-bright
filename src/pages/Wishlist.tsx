@@ -4,7 +4,8 @@ import { getProducts, Product } from "@/lib/api";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductDetail } from "@/components/ProductDetail";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Heart, ShoppingBag } from "lucide-react";
+import { Heart } from "lucide-react";
+import { SiteHeader } from "@/components/SiteHeader";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useCart } from "@/contexts/CartContext";
 import { Link } from "react-router-dom";
@@ -25,37 +26,16 @@ const Wishlist = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto py-4">
-          <div className="flex items-center justify-between gap-8">
-            <div className="flex items-center gap-4">
-              <Link to="/">
-                <Button variant="ghost" size="icon">
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-              </Link>
-              <a href="/" className="text-xl font-semibold tracking-tight">
-                store<span className="text-muted-foreground">.</span>
-              </a>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" className="gap-2">
-                <Heart className="h-4 w-4 fill-foreground" />
-                {wishlist.length}
-              </Button>
-              <Button size="sm" className="gap-2" onClick={() => setCartOpen(true)}>
-                <ShoppingBag className="h-4 w-4" />
-                Cart ({totalItems})
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader
+        cartCount={totalItems}
+        wishlistCount={wishlist.length}
+        onOpenCart={() => setCartOpen(true)}
+        backTo="/"
+        backLabel="Back to shop"
+      />
 
       {/* Main */}
-      <main className="container mx-auto py-8">
+      <main className="container mx-auto px-4 py-6 sm:py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold mb-2">Your Wishlist</h1>
           <p className="text-muted-foreground">
